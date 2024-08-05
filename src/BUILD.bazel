@@ -1,0 +1,40 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+    "csharp_test",
+)
+
+# bazel run //src:cli
+csharp_binary(
+    name = "cli",
+    srcs = ["cli.cs"],
+    target_frameworks = ["net8.0"],
+)
+
+# bazel test //src:tests
+csharp_test(
+    name = "tests",
+    srcs = ["tests.cs"],
+    target_frameworks = ["net8.0"],
+    deps = [
+        ":cli",
+        "@paket.main//xunit",
+        "@paket.main//xunit.assert",
+        "@paket.main//xunit.extensibility.core",
+    ],
+)
+
+bzl_library(
+    name = "paket.main",
+    srcs = ["paket.main.bzl"],
+    visibility = ["//visibility:public"],
+    deps = ["@rules_dotnet//dotnet:defs"],
+)
+
+bzl_library(
+    name = "paket.main_extension",
+    srcs = ["paket.main_extension.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [":paket.main"],
+)
