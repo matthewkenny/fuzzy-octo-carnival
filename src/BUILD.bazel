@@ -20,8 +20,10 @@ csharp_test(
     deps = [
         ":cli",
         "@paket.main//xunit",
-        "@paket.main//xunit.assert",
-        "@paket.main//xunit.extensibility.core",
+
+        # These packages are dependencies via the xunit package.
+        # "@paket.main//xunit.assert",
+        # "@paket.main//xunit.extensibility.core",
     ],
 )
 
